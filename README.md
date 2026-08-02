@@ -32,16 +32,18 @@ Windows 11 (HP Spectre)
 ## Repository Structure
 
 ```
-crails-platform/
-├── docs/
-│   ├── HLD/                        High-Level Design — architecture, goals, topology
-│   ├── LLD/                        Low-Level Design — VM specs, network, k3s config, service layout
-│   ├── SLO-SLI/                    SLO & SLI definitions + error budget policy (Google SRE principles)
-│   ├── runbooks/                   Incident runbooks — PostgreSQL failure, node loss, Redis OOM
-│   └── chaos-engineering/          Chaos scenarios, blast radius analysis, recovery playbooks
-└── dashboards/
-    └── CRAILS_Platform_Status_Dashboard.xlsx   Live platform status tracker (40/46 components running)
+crails/
+└── crails-platform-docs/
+    ├── HLD/                        High-Level Design — architecture, goals, topology
+    ├── LLD/                        Low-Level Design — VM specs, network, k3s config, service layout
+    ├── SLO-SLI/                    SLO & SLI definitions + error budget policy (Google SRE principles)
+    ├── runbooks/                   Incident runbooks — PostgreSQL failure, node loss, Redis OOM
+    ├── chaos-engineering/          Chaos scenarios, blast radius analysis, recovery playbooks
+    └── dashboards/
+        └── CRAILS_Platform_Status_Dashboard.xlsx   Live platform status tracker (40/46 components running)
 ```
+
+All documentation lives in [`crails-platform-docs/`](https://github.com/warrator/crails/tree/main/crails-platform-docs).
 
 ---
 
@@ -79,12 +81,12 @@ Error budget policy: deploy freeze when budget drops below 25%; incident declare
 
 | Document | Description |
 |----------|-------------|
-| [HLD](docs/HLD/CRAILS_Platform_HLD.docx) | Architecture overview, platform goals, environment strategy, technology decisions |
-| [LLD](docs/LLD/CRAILS_Platform_LLD.docx) | VM specs, network topology, k3s config, storage, service-level configuration |
-| [SLO/SLI](docs/SLO-SLI/CRAILS_Platform_SLO_SLI.docx) | SLI definitions, SLO targets, error budgets, alerting thresholds, Grafana dashboard specs |
-| [Runbook](docs/runbooks/CRAILS_Platform_Runbook.docx) | Incident response — PostgreSQL failure + replica promotion, node loss, Jenkins PVC recovery, Redis OOM |
-| [Chaos Engineering](docs/chaos-engineering/CRAILS_Platform_Chaos_Engineering.docx) | Failure scenarios, blast radius analysis, MTTR targets, recovery procedures |
-| [Status Dashboard](dashboards/CRAILS_Platform_Status_Dashboard.xlsx) | Live component tracker — 40/46 components running across staging + production |
+| [HLD](crails-platform-docs/HLD/CRAILS_Platform_HLD.docx) | Architecture overview, platform goals, environment strategy, technology decisions |
+| [LLD](crails-platform-docs/LLD/CRAILS_Platform_LLD.docx) | VM specs, network topology, k3s config, storage, service-level configuration |
+| [SLO/SLI](crails-platform-docs/SLO-SLI/CRAILS_Platform_SLO_SLI.docx) | SLI definitions, SLO targets, error budgets, alerting thresholds, Grafana dashboard specs |
+| [Runbook](crails-platform-docs/runbooks/CRAILS_Platform_Runbook.docx) | Incident response — PostgreSQL failure + replica promotion, node loss, Jenkins PVC recovery, Redis OOM |
+| [Chaos Engineering](crails-platform-docs/chaos-engineering/CRAILS_Platform_Chaos_Engineering.docx) | Failure scenarios, blast radius analysis, MTTR targets, recovery procedures |
+| [Status Dashboard](crails-platform-docs/dashboards/CRAILS_Platform_Status_Dashboard.xlsx) | Live component tracker — 40/46 components running across staging + production |
 
 ---
 
