@@ -1,0 +1,33 @@
+# Example input for criticality_engine.py
+# Modeled on the CRAILS Password Manager Backend service and its neighbours.
+
+services:
+  - name: password-manager-backend
+    traffic_share: 0.55
+    dependency_fanin: 6
+    incident_history: 2
+    manual_override: null
+
+  - name: api-gateway
+    traffic_share: 0.30
+    dependency_fanin: 9
+    incident_history: 1
+    manual_override: null
+
+  - name: auth-service
+    traffic_share: 0.10
+    dependency_fanin: 4
+    incident_history: 0
+    manual_override: null
+
+  - name: redis-cache
+    traffic_share: 0.04
+    dependency_fanin: 2
+    incident_history: 1
+    manual_override: null
+
+  - name: internal-admin-dashboard
+    traffic_share: 0.01
+    dependency_fanin: 0
+    incident_history: 0
+    manual_override: "tier-3"

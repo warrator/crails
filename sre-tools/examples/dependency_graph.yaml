@@ -1,0 +1,37 @@
+# Example input for blast_radius.py
+# Mirrors the CRAILS platform's real service topology:
+# api-gateway -> password-manager-backend -> postgres-primary / redis-cache
+#             -> auth-service -> postgres-primary
+
+services:
+  api-gateway:
+    depends_on: [password-manager-backend, auth-service]
+    tier: tier-1
+
+  password-manager-backend:
+    depends_on: [postgres-primary, redis-cache]
+    tier: tier-1
+
+  auth-service:
+    depends_on: [postgres-primary]
+    tier: tier-1
+
+  postgres-primary:
+    depends_on: []
+    tier: tier-1
+
+  postgres-replica:
+    depends_on: [postgres-primary]
+    tier: tier-2
+
+  redis-cache:
+    depends_on: []
+    tier: tier-2
+
+  internal-admin-dashboard:
+    depends_on: [postgres-primary]
+    tier: tier-3
+
+  reporting-batch-job:
+    depends_on: [postgres-replica]
+    tier: tier-3

@@ -33,18 +33,26 @@ Windows 11 (HP Spectre)
 
 ```
 crails/
-└── crails-platform-docs/
-    ├── docs/
-    │   ├── HLD/                    High-Level Design — architecture, goals, topology
-    │   ├── LLD/                    Low-Level Design — VM specs, network, k3s config, service layout
-    │   ├── SLO-SLI/                SLO & SLI definitions + error budget policy (Google SRE principles)
-    │   ├── runbooks/                Incident runbooks — PostgreSQL failure, node loss, Redis OOM
-    │   └── chaos-engineering/       Chaos scenarios, blast radius analysis, recovery playbooks
-    └── dashboards/
-        └── CRAILS_Platform_Status_Dashboard.xlsx   Live platform status tracker (40/46 components running)
+├── crails-platform-docs/
+│   ├── docs/
+│   │   ├── HLD/                    High-Level Design — architecture, goals, topology
+│   │   ├── LLD/                    Low-Level Design — VM specs, network, k3s config, service layout
+│   │   ├── SLO-SLI/                SLO & SLI definitions + error budget policy (Google SRE principles)
+│   │   ├── runbooks/                Incident runbooks — PostgreSQL failure, node loss, Redis OOM
+│   │   └── chaos-engineering/       Chaos scenarios, blast radius analysis, recovery playbooks
+│   └── dashboards/
+│       └── CRAILS_Platform_Status_Dashboard.xlsx   Live platform status tracker (40/46 components running)
+└── sre-tools/
+    ├── criticality_engine.py       Auto-tags services by tier (traffic, fan-in, incident history)
+    ├── blast_radius.py             Computes downstream impact of a service failure
+    ├── circuit_breaker_sim.py      CLOSED/OPEN/HALF_OPEN state machine + flaky-service demo
+    ├── error_budget_tracker.py     Red Mode release gating from SLO burn rate
+    ├── examples/                   Sample YAML configs for each tool
+    └── tests/                      25 unit tests (pytest)
 ```
 
 All documentation lives in [`crails-platform-docs/`](https://github.com/warrator/crails/tree/main/crails-platform-docs).
+The SRE automation toolkit lives in [`sre-tools/`](https://github.com/warrator/crails/tree/main/sre-tools).
 
 ---
 
@@ -64,7 +72,20 @@ All documentation lives in [`crails-platform-docs/`](https://github.com/warrator
 
 ---
 
-## SLO Targets (Production)
+## SRE-Grade Python Toolkit
+
+Standalone, tested implementations of the reliability patterns used across the platform — runnable as CLI tools or imported as libraries, and designed to plug into the Istio, Prometheus, and ArgoCD layers documented above.
+
+| Script | What it does |
+|---|---|
+| [`criticality_engine.py`](sre-tools/criticality_engine.py) | Scores services on traffic share, dependency fan-in, and incident history; maps to tier-1/2/3 with SLA targets; emits `kubectl`-ready annotation patches |
+| [`blast_radius.py`](sre-tools/blast_radius.py) | Walks a service dependency graph to compute every service transitively impacted by a failure, with hop-distance and severity scoring |
+| [`circuit_breaker_sim.py`](sre-tools/circuit_breaker_sim.py) | A from-scratch CLOSED → OPEN → HALF_OPEN state machine matching the mesh-level pattern Istio enforces; includes a `--demo` mode |
+| [`error_budget_tracker.py`](sre-tools/error_budget_tracker.py) | Computes error-budget burn rate and applies the Red Mode release-gating policy (GREEN/YELLOW/RED/INCIDENT); works against mock data or live Prometheus |
+
+25 unit tests, all passing (`python -m pytest tests/ -v`). Full usage examples in [`sre-tools/README.md`](sre-tools/README.md).
+
+---
 
 | SLO | Target | Window |
 |-----|--------|--------|
